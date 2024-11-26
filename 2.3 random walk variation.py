@@ -132,8 +132,7 @@ def plot_observations(observation_sequence, ax=None):
 #%%
     
 class Result:
-   
-    
+       
     def __init__(self, starting_state, time_limit, transitions, transitions_names, simulation_runs):
         self.starting_state = starting_state   #initial state of the system
         self.time_limit = time_limit          # max time limit of the simulation, the time at which it stops if nothing else has stopped it before (e.g. an absorption state)
@@ -178,12 +177,10 @@ class Result:
                         i = 1001
                     break
               
-            
           #  if self.observed_states_w_time[1][i] == 0:
            #     break
                   
                     
-        
         #una volta fatto ciò devo aggiornare una variabile interna mia che mi tiene conto di quale punto di observed_states mi trovo, così per la prossima riga mi basta cominciare a controllare da quello, non ho bisogno di andare a quelli precedenti
         #cioè, mi tengo il conto e se il tempo (colonna 1, riga i) è ancora lo stesso devo salvare lo stesso state precedente, sennò vuol dire che mi trovo in un successivo state e salvare quello
         
@@ -198,7 +195,7 @@ class Result:
         
         values = [obs.state for obs in self.observed_states]      # prende i values one at a time
         times = [obs.time_of_observation for obs in self.observed_states]   # prende i times one at a time
-        ax.plot(times, values, linestyle='steps-post')      # draws the states, connected by a straight line    
+        ax.plot(times, values, linestyle='-')      # draws the states, connected by a straight line    
         
         
         
@@ -245,16 +242,28 @@ class Result:
     
 #%%
 
-result_test = Result(5, 1000, [removal, increase], [Transition.DECREASE, Transition.INCREASE], 5)
 
-#result_test.get_result()
-'''
-for observation in result_test[:5]:
-    print(observation)
-    print()
-''' 
+# Instantiate the Result object
+starting_state = 5
+time_limit = 1000
+transitions = [removal, increase]
+transitions_names = [Transition.DECREASE, Transition.INCREASE]
+simulation_runs = 50
+result_test = Result(
+                    starting_state,
+                    time_limit,
+                    transitions,
+                    transitions_names,
+                    simulation_runs
+                    )
 
 
+print("\nStarting the simulation...")
+# do the simulation
+result_test.get_result()
+print(f"\nSimulation completed. Total number of iterations: {simulation_runs}")
+
+print("\n   First 5 observations:\n")
 result_test.print_first_k(5)
 
 fig, ax = plt.subplots()
